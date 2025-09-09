@@ -1,0 +1,167 @@
+esphome:
+  name: ws7_esphome
+  min_version: 2025.8.2
+  platformio_options:
+    build_unflags: -Werror=all
+    board_build.flash_mode: dio
+    build_flags: "-DBOARD_HAS_PSRAM" # Added
+    board_build.esp-idf.memory_type: qio_opi #Added
+    board_upload.maximum_ram_size: 524288 #Added
+    board_build.flash_size: 8MB #Added
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 8MB
+  cpu_frequency : 240MHz
+  framework:
+    type: esp-idf
+    version: 5.4.2
+    platform_version: 54.03.21
+    sdkconfig_options:
+      CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+      CONFIG_ESPTOOLPY_FLASHSIZE_8MB: "y"
+      CONFIG_FREERTOS_HZ: "1000"
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240: y
+      CONFIG_ESPTOOLPY_FLASHMODE_QIO: y
+      CONFIG_ESPTOOLPY_FLASHFREQ_80M: y
+#      CONFIG_ESPTOOLPY_FLASHFREQ_120M: y
+      CONFIG_SPIRAM_MODE_OCT: y
+      CONFIG_IDF_EXPERIMENTAL_FEATURES: y
+      CONFIG_SPIRAM_SPEED_80M: y
+#      CONFIG_SPIRAM_SPEED_120M: y
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
+      CONFIG_SPIRAM_RODATA: y
+      CONFIG_ESP32S3_DATA_CACHE_LINE_64B: y
+      #CONFIG_COMPILER_OPTIMIZATION_SIZE: y
+      CONFIG_COMPILER_OPTIMIZATION_PERF: y
+      #CONFIG_COMPILER_OPTIMIZATION_DEBUG: y
+    advanced:
+      enable_idf_experimental_features: False
+#      compiler_optimization: SIZE
+  
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  - platform: esphome
+    password: ""
+    
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ws7 Hard Fallback Hotspot"
+    password: "qq7NkYQAcBoy"
+
+captive_portal:
+
+# Video memory
+psram:
+  mode: octal
+  speed: 80MHz
+
+ch422g:
+  - id: io_ex
+
+# i2c connections
+i2c:
+  sda: 8
+  scl: 9
+  frequency: 400kHz
+  scan: false
+  id: bus_a    
+
+# Backlight
+# GPIO16 is mapped to RS-485 output port, pin A
+# This GPIO should be wired to the solderpad on the right of the ESP32-S3 module, next to its antenna, below 2 * 0603 ceramic capacitors
+# https://community.home-assistant.io/t/esp32-s3-7inch-capacitive-touch-display-adjust-brightness/771030
+output:
+  - platform: ledc
+    pin: GPIO16
+    id: id_output_backlight_brightness
+    #min_power: 0.0
+
+light:
+  - platform: monochromatic
+    id: id_light_backlight_brightness
+    output: id_output_backlight_brightness
+    name: "Backlight Brightness"
+    restore_mode: ALWAYS_ON
+
+switch:
+  - platform: gpio
+    name: "Backlight Switch"
+    id: display_backlight
+    pin: 
+      ch422g: io_ex
+      number: 2
+    restore_mode: ALWAYS_ON
+    internal: False
+    
+# Touch screen
+touchscreen:
+  platform: gt911
+  address: 0x5D
+  id: my_touchscreen
+  interrupt_pin: 4
+  reset_pin:
+    ch422g: io_ex
+    number: 1
+  
+# Display
+display:
+  - platform: rpi_dpi_rgb
+    id: my_display
+    update_interval: never
+    auto_clear_enabled: false
+    color_order: RGB
+    pclk_frequency: 16MHz
+    dimensions:
+      width: 800
+      height: 480
+    reset_pin:
+      ch422g: io_ex
+      number: 3
+    de_pin:
+      number: 5
+    hsync_pin:
+      number: 46
+      ignore_strapping_warning: true
+    vsync_pin:
+      number: 3
+      ignore_strapping_warning: true
+    pclk_pin: 7
+    pclk_inverted: true
+    hsync_back_porch: 8
+    hsync_front_porch: 8
+    hsync_pulse_width: 4
+    vsync_back_porch: 16
+    vsync_front_porch: 16
+    vsync_pulse_width: 4
+    data_pins:
+      red:
+        - 1         #r3.
+        - 2         #r4.
+        - 42        #r5
+        - 41        #r6
+        - 40        #r7
+      blue:
+        - 14        #b3
+        - 38        #b4
+        - 18        #b5
+        - 17        #b6
+        - 10        #b7
+      green:
+        - 39        #g2
+        - 0         #g3.
+        - 45        #g4
+        - 48        #g5
+        - 47        #g6
+        - 21        #g7

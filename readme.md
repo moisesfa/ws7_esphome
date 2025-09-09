@@ -1,0 +1,2 @@
+# WS7_ESPHOME
+
