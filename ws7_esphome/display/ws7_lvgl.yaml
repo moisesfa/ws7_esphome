@@ -1,6 +1,4 @@
-# https://next.esphome.io/components/lvgl/
 lvgl:
-  
   style_definitions:
     - id: page_style      # choose an ID for your definition
       x: 0
