@@ -1,51 +1,51 @@
 # https://next.esphome.io/components/lvgl/
 lvgl:
   
-  # style_definitions:
-  #   - id: page_style      # choose an ID for your definition
-  #     x: 0
-  #     y: 0
-  #     width: 100%
-  #     height: 100%
-  #     bg_color: black
-  #     border_width: 0
-  #     pad_all: 0
-  #     radius: 0
-  # pages:
-  #   - id: main_tileview_page
-  #     widgets:
-  #       - tileview:
-  #           id: tileview_main
-  #           tiles:
-  #             - column: 0
-  #               row: 0
-  #               dir: ALL
-  #               widgets:
-  #                 - obj:
-  #                     styles: page_style
-  #                 - label:
-  #                     align: CENTER
-  #                     text: "ONE"
-  #                     text_color: aliceblue
-  #             - column: 1
-  #               row: 0
-  #               dir: ALL
-  #               widgets:
-  #                 - obj:
-  #                     styles: page_style
-  #                 - label:
-  #                     align: CENTER
-  #                     text: "TWO"
-  #                     text_color: silver
-  #             - column: 2
-  #               row: 0
-  #               dir: ALL
-  #               widgets:
-  #                 - obj:
-  #                     styles: page_style
-  #                 - label:
-  #                     align: CENTER
-  #                     text: "THREE"
-  #                     text_color: aqua
+  style_definitions:
+    - id: page_style      # choose an ID for your definition
+      x: 0
+      y: 0
+      width: 100%
+      height: 100%
+      bg_color: black
+      border_width: 0
+      pad_all: 0
+      radius: 0
+  pages:
+    - id: main_tileview_page
+      widgets:
+        - tileview:
+            id: tileview_main
+            tiles:
+              - column: 0
+                row: 0
+                dir: ALL
+                widgets:
+                  - obj:
+                      styles: page_style
+                  - label:
+                      align: CENTER
+                      text: "ONE"
+                      text_color: aliceblue
+              - column: 1
+                row: 0
+                dir: ALL
+                widgets:
+                  - obj:
+                      styles: page_style
+                  - label:
+                      align: CENTER
+                      text: "TWO"
+                      text_color: silver
+              - column: 2
+                row: 0
+                dir: ALL
+                widgets:
+                  - obj:
+                      styles: page_style
+                  - label:
+                      align: CENTER
+                      text: "THREE"
+                      text_color: aqua
 
     
