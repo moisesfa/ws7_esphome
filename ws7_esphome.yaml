@@ -1,3 +1,4 @@
 packages:
   hardware: !include ws7_esphome/ws7_hardware.yaml
   lvgl: !include ws7_esphome/display/ws7_lvgl.yaml
+  interval: !include ws7_esphome/components/interval.yaml

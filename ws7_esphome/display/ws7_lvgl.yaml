@@ -1,3 +1,17 @@
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: Europe/Madrid
+
+font:
+  - file: "gfonts://Roboto"
+    id: big_font1
+    size: 64
+  - file: "gfonts://Roboto"
+    id: big_font2
+    size: 48
+
 lvgl:
   style_definitions:
     - id: page_style      # choose an ID for your definition
@@ -10,40 +24,25 @@ lvgl:
       pad_all: 0
       radius: 0
   pages:
-    - id: main_tileview_page
+    - id: main_page
       widgets:
-        - tileview:
-            id: tileview_main
-            tiles:
-              - column: 0
-                row: 0
-                dir: ALL
-                widgets:
-                  - obj:
-                      styles: page_style
-                  - label:
-                      align: CENTER
-                      text: "ONE"
-                      text_color: aliceblue
-              - column: 1
-                row: 0
-                dir: ALL
-                widgets:
-                  - obj:
-                      styles: page_style
-                  - label:
-                      align: CENTER
-                      text: "TWO"
-                      text_color: silver
-              - column: 2
-                row: 0
-                dir: ALL
-                widgets:
-                  - obj:
-                      styles: page_style
-                  - label:
-                      align: CENTER
-                      text: "THREE"
-                      text_color: aqua
+        - obj:
+            styles: page_style
+        # Hora grande arriba
+        - label:
+            id: display_time
+            text: "00:00:00"
+            align: TOP_MID
+            text_font: big_font1
+            y: 20
 
-    
+        # Fecha debajo
+        - label:
+            id: display_date
+            text: "14/09/2025"
+            align: TOP_MID
+            text_font: big_font2
+            y: 90
+
+
+        

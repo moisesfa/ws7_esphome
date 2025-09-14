@@ -1,0 +1,25 @@
+# Refrescar cada segundo (hora + fecha)
+interval:
+  - interval: 1s
+    then:
+      - lvgl.label.update:
+          id: display_time
+          text: !lambda |-
+            auto t = id(sntp_time).now();
+            if (t.is_valid()) {
+              char buf[16];
+              sprintf(buf, "%02d:%02d:%02d", t.hour, t.minute, t.second);
+              return std::string(buf);
+            }
+            return std::string("??:??:??");
+
+      - lvgl.label.update:
+          id: display_date
+          text: !lambda |-
+            auto t = id(sntp_time).now();
+            if (t.is_valid()) {
+              char buf[16];
+              sprintf(buf, "%02d/%02d/%04d", t.day_of_month, t.month, t.year);
+              return std::string(buf);
+            }
+            return std::string("--/--/----");
